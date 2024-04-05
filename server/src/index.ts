@@ -1,15 +1,25 @@
-const express = require('express');
-const { createServer } = require('node:http');
-const { join } = require('node:path');
-const { Server } = require('socket.io');
+import express from 'express';
+import { createServer } from 'node:http';
+import { Server, Socket } from 'socket.io';
+import cors from 'cors';
+import { roomHandler } from './room';
 
 const app = express();
+app.use(cors);
 const server = createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server, { 
+  cors: { 
+    origin: "*",
+    methods: ["GET", "POST"], 
+  },
+});
 
-io.on('connection', (socket: any) => {
-    io.emit("send", { name: "Xuan" });
-    console.log('a user connected');
+io.on('connection', (socket: Socket) => {
+  console.log('a user connected');
+  roomHandler(socket);
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  })
 });
 
 server.listen(3001, () => {
