@@ -1,16 +1,11 @@
 'use client'
-import Peer from "peerjs";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import useSocket from "../hooks/useSocket";
 import { useRouter } from "next/navigation";
 
-interface Ipeer {
-    peerIdL: string;
-    userName: string;
-};
-
 interface IRoom {
     roomId: string;
+    stream?:MediaStream;
 }
 
 export const RoomContext = createContext<IRoom>({
