@@ -18,8 +18,6 @@ export const UserContext = createContext<IUser>({
 export const UserContextProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [userId, setUserId] = useState<string>('');
     const [userName, setUserName] = useState<string>('');
-    console.log('abc', userName);
-    
     return (
         <UserContext.Provider value={{
             userId,

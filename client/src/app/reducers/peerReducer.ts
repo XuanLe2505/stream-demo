@@ -49,6 +49,6 @@ export const peersReducer = (state: peerStateType, action : peerActionType) => {
                 }
             };
         default:
-            break;
+            return { ...state};
     }
 };

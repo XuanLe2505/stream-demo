@@ -1,36 +1,38 @@
-"use client"
-import { useEffect } from "react";
-import io from 'socket.io-client';
-import useMediaStream from "../hooks/useMediaStream";
+"use client";
+import { useContext, useEffect } from "react";
 import useSocket from "../hooks/useSocket";
-import VideoPlayer from "../component/VideoPlayer";
+import { RoomContext } from "../context/RoomContext";
+import VideoPlayer from "../components/VideoPlayer";
 
 type MeetingDetailPageType = {
   params: {
-    meetingId: string
-  }
-}
+    meetingId: string;
+  };
+};
 
 export default function MeetingDetailPage({ params }: MeetingDetailPageType) {
-  const { stream } = useMediaStream();
-  const { socket } = useSocket();
+  const { stream, listRemoteStream } = useContext(RoomContext);
 
   useEffect(() => {
-    if(socket) {
-      socket.emit('abc');
-      socket.on("send", (data: any) => console.log(data));
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[]);
-
-  
-
+    console.log(listRemoteStream);
+  },[listRemoteStream])
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <div>{params.meetingId}</div>
-        <div className="w-[600px] h-[300px]">
-            <VideoPlayer stream={stream}/>
-        </div>
+    <main className="min-h-screen w-full p-5">
+      <h1 className=" font-bold text-[20px]">
+        room meeting id: {params.meetingId}
+      </h1>
+      <div className="mt-4 grid grid-cols-2 gap-4">
+        <VideoPlayer stream={stream} />
+        {listRemoteStream &&
+          Object.values(listRemoteStream).length > 0 &&
+          Object.keys(listRemoteStream)
+            .map((key: any) => (
+              <VideoPlayer
+                stream={listRemoteStream[key]}
+                key={listRemoteStream[key].id}
+              />
+            ))}
+      </div>
     </main>
   );
 }

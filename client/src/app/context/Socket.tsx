@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Socket, io } from "socket.io-client"
 
 export type SocketContextType = {
