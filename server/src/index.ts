@@ -1,13 +1,18 @@
 import express from "express";
-import { createServer } from "node:http";
 import cors from "cors";
 import { BootstrapSocketIo } from "./socket";
+import { BoostrapRouter } from "./routes";
 
 const app = express();
-const server = createServer(app);
-app.use(cors);
-BootstrapSocketIo(server);
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-server.listen(3001, () => {
+BoostrapRouter(app);
+
+
+const server = app.listen(3001, () => {
   console.log("server running at http://localhost:3001");
 });
+BootstrapSocketIo(server);
+
