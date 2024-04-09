@@ -10,7 +10,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx nodemon",
     "build": "rimraf ./dist && tsc && tsc-alias",
-    "start": "node dist/main.js"
+    "start": "node dist/main.js",
+    "migrate:generate": "sudo node migrations/migration.js add migration",
+    "migrate:all": "sudo node migrations/migration.js up --migrate-all",
+    "migrate:up": "sudo node migrations/migration.js up",
+    "migrate:down": "sudo node migrations/migration.js down",
+    "migrate:refresh": "sudo node migrations/migration.js refresh"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +23,7 @@
     "@types/uuid": "^9.0.8",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "mysql-migrations": "^1.0.7",
     "mysql2": "^3.9.3",
     "peer": "^1.0.2",
     "rimraf": "^5.0.5",
