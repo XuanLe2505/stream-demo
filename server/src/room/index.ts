@@ -26,6 +26,9 @@ export const roomHandler = (socket: Socket) => {
     rooms[roomId][peerId] = { peerId, userName: "" };
     socket.join(roomId);
     socket.to(roomId).emit("user-joined", { peerId, userName: "" });
+    socket.on('disconnect', () => {
+      socket.to(roomId).emit('leave-room', peerId);
+    });
   };
 
   socket.on("join-room", joinRoom);

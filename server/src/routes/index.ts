@@ -1,10 +1,10 @@
 import { Application, Router } from "express";
-import userApi from "./user.api";
+import userRouter from "./user.api";
 
-export const BoostrapRouter = (app: Application) => {
+export const BootstrapRouter = (app: Application) => {
   const router = Router();
 
-  router.use("/users", userApi);
+  router.use("/users", userRouter);
 //   router.use("/room", roomApi);
 
   app.use("/api/", router);

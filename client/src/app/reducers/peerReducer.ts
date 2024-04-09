@@ -19,7 +19,7 @@ type removePeerStreamType = {
     payload: { peerId: string },
 }
 
-type peerActionType = addPeerStreamType | addPeerNameType | addAllPeersType | removePeerStreamType;
+export type peerActionType = addPeerStreamType | addPeerNameType | addAllPeersType | removePeerStreamType;
 
 export const peersReducer = (state: peerStateType, action : peerActionType) => {
     switch (action.type) {
@@ -42,13 +42,9 @@ export const peersReducer = (state: peerStateType, action : peerActionType) => {
         case ADD_ALL_PEER:
             return {...state, ...action.payload.peers};
         case REMOVE_PEER_STREAM:
-            return {
-                ...state,
-                [action.payload.peerId]: {
-                    peerId: action.payload.peerId,
-                }
-            };
+            const { [action.payload.peerId]: {}, ...rest } = state;
+            return rest;
         default:
-            return { ...state};
+            return { ...state };
     }
 };
