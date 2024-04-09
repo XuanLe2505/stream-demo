@@ -7,6 +7,6 @@ const db = mysql.createPool({
     password: 'thoaiky1992',
     database: 'stream',
     connectionLimit: 10
-})
+}).promise();
 
 export default db;

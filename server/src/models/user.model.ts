@@ -1,14 +1,14 @@
 import db from "../db";
 
 interface CrudModel<T> {
-	getMany: () => Promise<T[]>,
+  getMany: () => Promise<T[]>;
 }
 
 interface IUser {
-	username: string
-	email: string
-	password: string
-	image?: string
+  username: string;
+  email: string;
+  password: string;
+  image?: string;
 }
 
 class UserModelInstance implements CrudModel<IUser> {
@@ -17,7 +17,6 @@ class UserModelInstance implements CrudModel<IUser> {
   constructor() {
     this.db = db;
   }
-	
 
   // design pattern singleton
   static getInstance() {
@@ -31,17 +30,13 @@ class UserModelInstance implements CrudModel<IUser> {
     const SQL_GET_USER_BY_ID = `
 			SELECT * FROM users where id = ?
 		`;
-    const data: any = await new Promise((resolve) => {
-      db.query(SQL_GET_USER_BY_ID, [id], (err, result) => resolve(result));
-    });
+    const [data]: any = await db.query(SQL_GET_USER_BY_ID, [id])
     return data[0];
   }
 
   async getMany(): Promise<IUser[]> {
     const SQL_GET_USER_BY_ID = `SELECT * FROM users`;
-    const data: any = await new Promise((resolve) => {
-      db.query(SQL_GET_USER_BY_ID, (err, result) => resolve(result));
-    });
+    const [data]: any = await db.query(SQL_GET_USER_BY_ID);
     return data;
   }
 
@@ -49,15 +44,11 @@ class UserModelInstance implements CrudModel<IUser> {
     const SQL_CREATE_NEW_USER = `
     INSERT INTO users(username,email,password) VALUES (?,?,?)
   `;
-    const result: any = await new Promise((resolve) => {
-      db.query(
-        SQL_CREATE_NEW_USER,
-        [username, email, password],
-        (err, result) => {
-          resolve(result);
-        }
-      );
-    });
+    const [result]: any = await db.query(SQL_CREATE_NEW_USER, [
+      username,
+      email,
+      password,
+    ]);
     const data = await this.getOne(String(result.insertId));
     return data;
   }
