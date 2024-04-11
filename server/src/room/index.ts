@@ -31,5 +31,10 @@ export const roomHandler = (socket: Socket) => {
     });
   };
 
+  const toggleVideo = ({ peerId, roomId }: IJoinRoomParams) => {
+    socket.to(roomId).emit("toggled-video", { peerId });
+  };
+
   socket.on("join-room", joinRoom);
+  socket.on('toggle-video', toggleVideo);
 };

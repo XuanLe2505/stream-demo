@@ -54,29 +54,34 @@ export const RoomContextProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     if (!myPeer) return;
     socket?.emit("join-room", { roomId: params?.meetingId, peerId: myPeer.id });
-    socket?.on("user-joined", ({ peerId, userName }) => { 
+    socket?.on("user-joined", ({ peerId, userName }) => {  
       const call = myPeer.call(peerId, stream!, {
         metadata: {
           userName,
         }
-      });      
-      call.on("stream", (peerStream) => {
-        dispatch(addPeerStreamAction(peerId, peerStream));
       });
-      dispatch(addPeerNameAction(peerId, userName));
+      call.on("stream", (peerStream) => {
+        dispatch(addPeerStreamAction(call, peerStream));
+      });
+      dispatch(addPeerNameAction(call, userName));
     });
     myPeer.on("call", (call) => {
       const { userName } = call.metadata as { userName: string };
-      dispatch(addPeerNameAction(call.peer, userName));
+      dispatch(addPeerNameAction(call, userName));
       call.answer(stream);
       call.on("stream", (peerStream) => {
-        dispatch(addPeerStreamAction(call.peer, peerStream));
+        dispatch(addPeerStreamAction(call, peerStream));
       });
     });
     socket?.on('leave-room', (peerId: string) => {
       dispatch(removePeerStreamAction(peerId));
     })
   }, [myPeer]);
+
+  useEffect(() => {
+    console.log('peers', peers);
+    
+  }, [peers]);
 
   return (
     <RoomContext.Provider

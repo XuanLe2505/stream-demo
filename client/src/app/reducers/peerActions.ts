@@ -1,16 +1,18 @@
+import { MediaConnection } from "peerjs";
+
 export const ADD_PEER_STREAM = 'ADD_PEER_STREAM' as const;
 export const ADD_PEER_NAME = 'ADD_PEER_NAME' as const;
 export const REMOVE_PEER_STREAM = 'REMOVE_PEER_STREAM' as const;
 export const ADD_ALL_PEER = 'ADD_ALL_PEER' as const;
 
-export const addPeerStreamAction = (peerId: string, stream: MediaStream) => ({
+export const addPeerStreamAction = (peer: MediaConnection, stream: MediaStream) => ({
     type: ADD_PEER_STREAM,
-    payload: { peerId, stream },
+    payload: { peer, stream },
 });
 
-export const addPeerNameAction = (peerId: string, userName: string) => ({
+export const addPeerNameAction = (peer: MediaConnection, userName: string) => ({
     type: ADD_PEER_NAME,
-    payload: { peerId, userName },
+    payload: { peer, userName },
 });
 
 export const removePeerStreamAction = (peerId: string) => ({
@@ -18,7 +20,7 @@ export const removePeerStreamAction = (peerId: string) => ({
     payload: { peerId },
 });
 
-export const addAllPeerAction = (peers: Record<string, { peerId: string, userName: string }>) => ({
+export const addAllPeerAction = (peers: Record<string, { peer: MediaConnection, userName: string }>) => ({
     type: ADD_ALL_PEER,
     payload: { peers },
 });
