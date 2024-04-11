@@ -29,6 +29,7 @@ export const peersReducer = (state: peerStateType, action : peerActionType) => {
                 ...state,
                 [action.payload.peer.peer]: {
                     ...state[action.payload.peer.peer],
+                    peer: action.payload.peer,
                     stream: action.payload.stream,
                 }
             };
@@ -37,6 +38,7 @@ export const peersReducer = (state: peerStateType, action : peerActionType) => {
                 ...state,
                 [action.payload.peer.peer]: {
                     ...state[action.payload.peer.peer],
+                    peer: action.payload.peer,
                     userName: action.payload.userName,
                 }
             };
